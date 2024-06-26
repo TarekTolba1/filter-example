@@ -22,13 +22,6 @@ export default function getUserCoursesHandler(directusContext) {
       const fields = [
         "id",
         "name",
-        "shopware_product_ids",
-        "is_demo",
-        "intro_video_link",
-        "translated_title",
-        "translated_subtitle",
-        "target_language.name",
-        "target_language.iso_code",
         "transfer_languages.language",
       ];
       let courses = await courseService.readByQuery({
