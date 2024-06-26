@@ -1,0 +1,58 @@
+version: "3.8"
+services:
+  database:
+    container_name: database_example
+    image: postgres:14.5
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+    environment:
+      # Syntax: ${VARIABLE-DEFAULT_VALUE}
+      # https://stackoverflow.com/a/42242194
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "filter_example"
+    networks:
+      - directus
+
+  directus:
+    ports:
+      - "8055:8055"
+    volumes:
+      - ./uploads:/directus/uploads
+      - ./extensions:/directus/extensions
+      - ./schema.yaml:/directus/schema.yaml
+    container_name: directus_example
+    build: .
+    restart: unless-stopped
+    networks:
+      - directus
+    depends_on:
+      - database
+    environment:
+      EXTENSIONS_AUTO_RELOAD: "true"
+      PUBLIC_URL: "http://0.0.0.0:8055"
+      # KEY & SECRET usage:
+      # https://github.com/directus/directus/discussions/11848#discussioncomment-2249466
+      KEY: SomeKey
+      SECRET: SomeSecret
+
+      DB_CLIENT: "pg"
+      DB_HOST: "database"
+      DB_PORT: "5432"
+      DB_DATABASE: "filter_example"
+      DB_USER: "user"
+      DB_PASSWORD: "password"
+
+      ADMIN_EMAIL: "admin@admin.com"
+      ADMIN_PASSWORD: "password"
+
+      CORS_ENABLED: "true"
+      CORS_ALLOWED_HEADERS: "Content-Type"
+
+volumes:
+  database:
+networks:
+  directus:

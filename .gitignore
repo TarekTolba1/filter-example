@@ -1,0 +1,9 @@
+/uploads/
+**/node_modules
+
+# vs-code extenstions
+.history
+
+.DS_Store
+
+.idea
