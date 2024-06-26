@@ -10,10 +10,10 @@ export default function getUserCoursesHandler(directusContext) {
         transfer_languages: {
           _or: [
             {
-              publishing_status: { _eq: "published" },
+              publish_status: { _eq: "published" },
             },
             {
-              publishing_status: { _eq: "available_for_testing" },
+              publish_status: { _eq: "available_for_testing" },
             },
           ],
         },
